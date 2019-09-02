@@ -1,18 +1,22 @@
 package apps;
 
 /**
- * Hello world!
+ * Web Service allows to developers create new functions for their
+ * web application.
  */
 public class WebService {
 
-    @Web("cuadrado")
-    public static String square() {
+    @Web("square")
+    public static String square(String number) {
+        int param = Integer.parseInt(number);
         return "<html>" +
                 "<head>" +
-                "<title></title>" +
+                "<title>Result</title>" +
                 "</head>" +
                 "<body>" +
-                "<div>Inicio</div>" +
+                "<h1>Inicio</h1>" +
+                "<div>El cuadrado de " + number + " es: </div>" +
+                "<div>" + param * param + "</div>" +
                 "</body>" +
                 "</html>";
     }
