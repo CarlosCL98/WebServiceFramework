@@ -93,7 +93,7 @@ public class Service {
             out.close();
             in.close();
             dataOut.close();
-            clientSocket.close();
+            serverSocket.close();
             clientSocket.close();
         }
     }
