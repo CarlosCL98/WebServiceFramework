@@ -23,15 +23,24 @@ public class Service {
     private static BufferedReader in;
     private static BufferedOutputStream dataOut;
 
-    public static void listen() throws IOException {
-        upServerSocket();
-        boolean keepAlive = true;
-        while (keepAlive) {
+    public static void listen() {
+        while (true) {
             try {
-                // Keep connection until client disconnect to the server.
-                upClientSocket();
-                // Prepare to receive and send requests and responses.
-                // For the header.
+                serverSocket = new ServerSocket(port);
+                System.out.println("Listening for connections on port --> " + port);
+            } catch (IOException ex) {
+                System.out.println("Could not listen on port: " + port + ". IOException: " + ex);
+            }
+            // Keep connection until client disconnect to the server.
+            try {
+                clientSocket = serverSocket.accept();
+                System.out.println("Connection accepted.");
+            } catch (IOException e) {
+                System.out.println("Could not accept the connection to client.");
+            }
+            // Prepare to receive and send requests and responses.
+            // For the header.
+            try {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 // For the binary data requested.
@@ -67,10 +76,10 @@ public class Service {
                         if (req.contains("?")) {
                             String[] params = req.substring(req.indexOf("?") + 1, req.length() - 1).split("&");
                             methodArgs = params[0].substring(params[0].indexOf("=") + 1, params[0].length());
-                        /*methodArgs = new String[params.length];
-                        for (int i = 0; i < params.length; i++) {
-                            methodArgs[i] = params[i].substring(params[i].indexOf("=")+1, params[i].length());
-                        }*/
+                    /*methodArgs = new String[params.length];
+                    for (int i = 0; i < params.length; i++) {
+                        methodArgs[i] = params[i].substring(params[i].indexOf("=")+1, params[i].length());
+                    }*/
                             req = req.substring(0, req.indexOf("?"));
                         } else {
                             req = req.substring(0, req.length() - 1);
@@ -92,15 +101,15 @@ public class Service {
                 } else {
                     HttpServer.httpHandler(header, out, dataOut);
                 }
+                out.close();
+                in.close();
+                dataOut.close();
+                clientSocket.close();
+                serverSocket.close();
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
-            out.close();
-            in.close();
-            dataOut.close();
-            clientSocket.close();
         }
-        serverSocket.close();
     }
 
     /**
@@ -170,23 +179,5 @@ public class Service {
             port = Integer.parseInt(System.getenv("PORT"));
         }
         return port;
-    }
-
-    private static void upServerSocket() {
-        try {
-            serverSocket = new ServerSocket(port);
-            System.out.println("Listening for connections on port --> " + port);
-        } catch (IOException ex) {
-            System.out.println("Could not listen on port: " + port + ". IOException: " + ex);
-        }
-    }
-
-    private static void upClientSocket() {
-        try {
-            clientSocket = serverSocket.accept();
-            System.out.println("Connection accepted.");
-        } catch (IOException e) {
-            System.out.println("Could not accept the connection to client.");
-        }
     }
 }
