@@ -1,7 +1,5 @@
 package apps;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
 
@@ -149,14 +147,14 @@ public class HttpServer {
      * @param response
      */
     public static void headerResponse(PrintWriter out, File file, String contentType, String response) {
-        out.write("HTTP/1.1 " + response + "\r\n");
-        out.write("Server: Java HTTP Server from CarlosCL : 1.0\r\n");
-        out.write("Date: " + new Date() + "\r\n");
-        out.write("Content-type: " + contentType + ";charset=UTF-8\r\n");
+        out.write("HTTP/1.1 " + response);
+        //out.write("Server: Java HTTP Server from CarlosCL : 1.0");
+        //out.write("Date: " + new Date());
+        out.write("Content-type: " + contentType + ";charset=UTF-8");
         if (file != null) {
-            out.write("Content-length: " + file.length() + "\r\n");
+            out.write("Content-length: " + file.length());
         }
-        out.write("\r\n");
+        out.println("\r");
         out.flush();
     }
 
