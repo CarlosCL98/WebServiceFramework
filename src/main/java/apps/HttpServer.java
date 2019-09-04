@@ -138,7 +138,6 @@ public class HttpServer {
         // Header
         headerResponse(out, file, contentType, response);
         // Content
-        String[] contentTypeDivided = contentType.split("/");
         contentResponse(file, dataOut);
     }
 
@@ -150,14 +149,14 @@ public class HttpServer {
      * @param response
      */
     public static void headerResponse(PrintWriter out, File file, String contentType, String response) {
-        out.println("HTTP/1.1 " + response + "\r");
-        out.println("Server: Java HTTP Server from CarlosCL : 1.0\r");
-        out.println("Date: " + new Date());
-        out.println("Content-type: " + contentType + ";charset=UTF-8\r");
+        out.write("HTTP/1.1 " + response + "\r\n");
+        out.write("Server: Java HTTP Server from CarlosCL : 1.0\r\n");
+        out.write("Date: " + new Date() + "\r\n");
+        out.write("Content-type: " + contentType + ";charset=UTF-8\r\n");
         if (file != null) {
-            out.println("Content-length: " + file.length() + "\r");
+            out.write("Content-length: " + file.length() + "\r\n");
         }
-        out.println("\r");
+        out.write("\r\n");
         out.flush();
     }
 

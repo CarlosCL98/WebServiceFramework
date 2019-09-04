@@ -79,7 +79,7 @@ public class Service {
                             HttpServer.headerResponse(out, null, "text/html", res);
                             // Content
                             String content = (urlHandler.get(req)).process(methodArgs);
-                            out.write(content);
+                            out.write(content+"\r\n");
                             out.flush();
                         } else {
                             String[] newHeader = new String[]{"GET","/notFound.html","HTTP/1.1"};
