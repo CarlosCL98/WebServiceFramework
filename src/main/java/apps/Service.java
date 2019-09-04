@@ -24,84 +24,76 @@ public class Service {
     private static BufferedOutputStream dataOut;
 
     public static void listen() throws IOException {
-        upServerSocket();
-        // Keep connection until client disconnect to the server.
-        try {
-            while (true) {
-                upClientSocket();
-                // Prepare to receive and send requests and responses.
-                // For the header.
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                // For the binary data requested.
-                dataOut = new BufferedOutputStream(clientSocket.getOutputStream());
-                // Header from client.
-                String inputLine = in.readLine();
-                String[] header = new String[]{"GET", "/", "HTTP/1.1"};
-                // Read HTTP request from the client socket.
-                int cantRead = 0;
-                while (inputLine != null) {
-                    if (cantRead < 1) {
-                        header = inputLine.split(" ");
-                    }
-                    System.out.println("Received: " + inputLine);
-                    if (!in.ready()) {
-                        break;
-                    }
-                    inputLine = in.readLine();
-                    cantRead++;
+        while (true) {
+            upServerSocket();
+            // Keep connection until client disconnect to the server.
+            upClientSocket();
+            // Prepare to receive and send requests and responses.
+            // For the header.
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            // For the binary data requested.
+            dataOut = new BufferedOutputStream(clientSocket.getOutputStream());
+            // Header from client.
+            String inputLine = in.readLine();
+            String[] header = new String[]{"GET", "/", "HTTP/1.1"};
+            // Read HTTP request from the client socket.
+            int cantRead = 0;
+            while (inputLine != null) {
+                if (cantRead < 1) {
+                    header = inputLine.split(" ");
                 }
-                String[] request = header[1].split("/");
-                if (request.length > 1) {
-                    if ("apps".equals(request[1])){
-                        String req = "";
-                        String res = "200 OK";
-                        for (String r : request) {
-                            if (!r.isEmpty()) {
-                                req += r + "/";
-                            }
+                System.out.println("Received: " + inputLine);
+                if (!in.ready()) {
+                    break;
+                }
+                inputLine = in.readLine();
+                cantRead++;
+            }
+            String[] request = header[1].split("/");
+            if (request.length > 1) {
+                if ("apps".equals(request[1])){
+                    String req = "";
+                    String res = "200 OK";
+                    for (String r : request) {
+                        if (!r.isEmpty()) {
+                            req += r + "/";
                         }
-                        // Look for param query
-                        String methodArgs = null;
-                        if (req.contains("?")) {
-                            String[] params = req.substring(req.indexOf("?")+1, req.length()-1).split("&");
-                            methodArgs = params[0].substring(params[0].indexOf("=")+1, params[0].length());
-                            /*methodArgs = new String[params.length];
-                            for (int i = 0; i < params.length; i++) {
-                                methodArgs[i] = params[i].substring(params[i].indexOf("=")+1, params[i].length());
-                            }*/
-                            req = req.substring(0, req.indexOf("?"));
-                        } else {
-                            req = req.substring(0, req.length()-1);
-                        }
-                        if (urlHandler.containsKey(req)){
-                            // Header
-                            HttpServer.headerResponse(out, null, "text/html", res);
-                            // Content
-                            String content = (urlHandler.get(req)).process(methodArgs);
-                            out.write(content+"\r\n");
-                            out.flush();
-                        } else {
-                            String[] newHeader = new String[]{"GET","/notFound.html","HTTP/1.1"};
-                            HttpServer.httpHandler(newHeader, out, dataOut);
-                        }
+                    }
+                    // Look for param query
+                    String methodArgs = null;
+                    if (req.contains("?")) {
+                        String[] params = req.substring(req.indexOf("?")+1, req.length()-1).split("&");
+                        methodArgs = params[0].substring(params[0].indexOf("=")+1, params[0].length());
+                        /*methodArgs = new String[params.length];
+                        for (int i = 0; i < params.length; i++) {
+                            methodArgs[i] = params[i].substring(params[i].indexOf("=")+1, params[i].length());
+                        }*/
+                        req = req.substring(0, req.indexOf("?"));
                     } else {
-                        HttpServer.httpHandler(header, out, dataOut);
+                        req = req.substring(0, req.length()-1);
+                    }
+                    if (urlHandler.containsKey(req)){
+                        // Header
+                        HttpServer.headerResponse(out, null, "text/html", res);
+                        // Content
+                        String content = (urlHandler.get(req)).process(methodArgs);
+                        out.write(content+"\r\n");
+                        out.flush();
+                    } else {
+                        String[] newHeader = new String[]{"GET","/notFound.html","HTTP/1.1"};
+                        HttpServer.httpHandler(newHeader, out, dataOut);
                     }
                 } else {
                     HttpServer.httpHandler(header, out, dataOut);
                 }
-                out.close();
-                in.close();
-                dataOut.close();
-                clientSocket.close();
+            } else {
+                HttpServer.httpHandler(header, out, dataOut);
             }
-        } finally {
-            // Closing all connections.
             out.close();
             in.close();
             dataOut.close();
-            serverSocket.close();
+            clientSocket.close();
             clientSocket.close();
         }
     }

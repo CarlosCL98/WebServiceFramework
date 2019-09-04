@@ -148,13 +148,13 @@ public class HttpServer {
      */
     public static void headerResponse(PrintWriter out, File file, String contentType, String response) {
         out.write("HTTP/1.1 " + response);
-        //out.write("Server: Java HTTP Server from CarlosCL : 1.0");
-        //out.write("Date: " + new Date());
-        out.write("Content-type: " + contentType + ";charset=UTF-8");
+        out.write("Server: Java HTTP Server from CarlosCL : 1.0\r\n");
+        out.write("Date: " + new Date() + "\r\n");
+        out.write("Content-type: " + contentType + ";charset=UTF-8\r\n");
         if (file != null) {
-            out.write("Content-length: " + file.length());
+            out.write("Content-length: " + file.length() + "\r\n");
         }
-        out.println("\r");
+        out.write("\r\n");
         out.flush();
     }
 
