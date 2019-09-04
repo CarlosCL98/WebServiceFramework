@@ -97,7 +97,7 @@ public class HttpServer {
         } else if (requestedFile.endsWith(".png")) { // Images
             response[0] = "image/png";
         } else if (requestedFile.endsWith(".jpg") || requestedFile.endsWith(".jpeg")) {
-            response[0] = "image/jpeg";
+            response[0] = "image/jpg";
         } else if (requestedFile.endsWith(".ico")) {
             response[0] = "image/x-icon";
         } else if (requestedFile.endsWith(".svg")) {
@@ -139,19 +139,7 @@ public class HttpServer {
         headerResponse(out, file, contentType, response);
         // Content
         String[] contentTypeDivided = contentType.split("/");
-        if (contentTypeDivided[0].equals("image")) {
-            if (contentTypeDivided[1].contains("svg")) {
-                contentResponse(file, dataOut);
-            } else {
-                BufferedImage image = ImageIO.read(file);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, contentTypeDivided[1], baos);
-                dataOut.write(baos.toByteArray());
-                dataOut.flush();
-            }
-        } else {
-            contentResponse(file, dataOut);
-        }
+        contentResponse(file, dataOut);
     }
 
     /**
