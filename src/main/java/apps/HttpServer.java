@@ -3,9 +3,6 @@ package apps;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.Buffer;
 import java.util.Date;
 
 /**
@@ -20,8 +17,6 @@ public class HttpServer {
     private static final String NOT_FOUND = "/404.html";
     private static final String METHOD_NOT_ALLOWED = "/405.html";
     private static final String UNSUPPORTED_MEDIA_TYPE = "/415.html";
-
-    private static final int PORT = 35000;
 
     /**
      *
@@ -167,14 +162,14 @@ public class HttpServer {
      * @param response
      */
     public static void headerResponse(PrintWriter out, File file, String contentType, String response) {
-        out.println("HTTP/1.1 " + response);
-        out.println("Server: Java HTTP Server from CarlosCL : 1.0");
+        out.println("HTTP/1.1 " + response + "\r");
+        out.println("Server: Java HTTP Server from CarlosCL : 1.0\r");
         out.println("Date: " + new Date());
-        out.println("Content-type: " + contentType + ";charset=UTF-8");
+        out.println("Content-type: " + contentType + ";charset=UTF-8\r");
         if (file != null) {
-            out.println("Content-length: " + file.length());
+            out.println("Content-length: " + file.length() + "\r");
         }
-        out.println();
+        out.println("\r");
         out.flush();
     }
 

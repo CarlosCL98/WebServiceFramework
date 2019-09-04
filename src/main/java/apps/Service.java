@@ -37,14 +37,19 @@ public class Service {
                 dataOut = new BufferedOutputStream(clientSocket.getOutputStream());
                 // Header from client.
                 String inputLine = in.readLine();
-                String[] header = inputLine.split(" ");
+                String[] header = new String[]{};
                 // Read HTTP request from the client socket.
+                int cantRead = 0;
                 while (inputLine != null) {
+                    if (cantRead < 1) {
+                        header = inputLine.split(" ");
+                    }
                     System.out.println("Received: " + inputLine);
                     if (!in.ready()) {
                         break;
                     }
                     inputLine = in.readLine();
+                    cantRead++;
                 }
                 String[] request = header[1].split("/");
                 if (request.length > 1) {
