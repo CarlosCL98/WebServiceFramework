@@ -17,11 +17,14 @@ public class HttpServer {
     private static final String UNSUPPORTED_MEDIA_TYPE = "/415.html";
 
     /**
+     * Http handler allows to receive a request and process it to generate
+     * a response.
      *
-     * @param header
-     * @param out
-     * @param dataOut
-     * @throws IOException
+     * @param header represents the header of the request.
+     * @param out represents the output stream that allows send data as a strings.
+     * @param dataOut represents the binary output used to send files as
+     *                images, html and more.
+     * @throws IOException : in case that a file could not be found.
      */
     public static void httpHandler(String[] header, PrintWriter out, BufferedOutputStream dataOut) throws IOException {
         String[] responseMethod = checkMethod(out, dataOut, header[0]);
@@ -59,13 +62,13 @@ public class HttpServer {
      * Checks the HTTP method sent by the client to determine if the
      * server can or cannot response to it.
      *
-     * @param out
-     * @param dataOut
-     * @param method
+     * @param out represents the output stream that allows send data as a strings.
+     * @param dataOut represents the binary output used to send files as
+     *                images, html and more.
+     * @param method represents the HTTP method used in a request.
      * @return String[] : the response.
-     * @throws IOException
      */
-    private static String[] checkMethod(PrintWriter out, BufferedOutputStream dataOut, String method) throws IOException {
+    private static String[] checkMethod(PrintWriter out, BufferedOutputStream dataOut, String method) {
         String[] response = new String[2];
         response[0] = "true";
         response[1] = "OK";
@@ -80,13 +83,14 @@ public class HttpServer {
      * Checks the content type sent by the client to determine if the
      * server can or cannot response to it.
      *
-     * @param out
-     * @param dataOut
-     * @param requestedFile
+     * @param out represents the output stream that allows send data as a strings.
+     * @param dataOut represents the binary output used to send files as
+     *                images, html and more.
+     * @param requestedFile represents the file that is going to be the converted
+     *                      in bytes to send to the server.
      * @return String[] : the response.
-     * @throws IOException
      */
-    private static String[] checkContentType(PrintWriter out, BufferedOutputStream dataOut, String requestedFile) throws IOException {
+    private static String[] checkContentType(PrintWriter out, BufferedOutputStream dataOut, String requestedFile) {
         String[] response = new String[2];
         response[0] = "text/html";
         response[1] = "OK";
@@ -125,12 +129,16 @@ public class HttpServer {
     /**
      * Send the response when the server filter the request.
      *
-     * @param out
-     * @param dataOut
-     * @param file
-     * @param contentType
-     * @param response
-     * @throws IOException
+     * @param out represents the output stream that allows send data as a strings.
+     * @param dataOut represents the binary output used to send files as
+     *                images, html and more.
+     * @param file represents the file needed to response the request.
+     * @param contentType represents the content type that is going to be send
+     *                    through the server.
+     * @param response represents the http code used to determine if a request was
+     *                 successful (200 OK) or fail (404 NOT FOUND).
+     * @throws IOException : in case that a file could not be found or the output
+     * stream presents an error.
      */
     private static void sendResponse(PrintWriter out, BufferedOutputStream dataOut, File file, String contentType, String response) throws IOException {
         // Header
@@ -140,11 +148,14 @@ public class HttpServer {
     }
 
     /**
+     * Header response creates the response header to the request.
      *
-     * @param out
-     * @param file
-     * @param contentType
-     * @param response
+     * @param out represents the output stream that allows send data as a strings.
+     * @param file represents the file to extract the length of it.
+     * @param contentType represents the content type that is going to be send
+     *                    through the server.
+     * @param response represents the http code used to determine if a request was
+     *                 successful (200 OK) or fail (404 NOT FOUND).
      */
     public static void headerResponse(PrintWriter out, File file, String contentType, String response) {
         out.write("HTTP/1.1 " + response + "\r\n");
@@ -159,10 +170,14 @@ public class HttpServer {
     }
 
     /**
+     * Content response send to the client the file or thing that was
+     * requested.
      *
-     * @param file
-     * @param dataOut
-     * @throws IOException
+     * @param file represents the file to send in the response.
+     * @param dataOut represents the binary output used to send files as
+     *                images, html and more.
+     * @throws IOException : in case that a file could not be found or the output
+     * stream presents an error.
      */
     public static void contentResponse (File file, BufferedOutputStream dataOut) throws IOException {
         byte[] fileByte = fileToByte(file);
@@ -173,9 +188,10 @@ public class HttpServer {
     /**
      * Convert the file to bytes to send it to the client.
      *
-     * @param file
+     * @param file represents the file to convert to bytes.
      * @return byte[] : file in form of bytes.
-     * @throws IOException
+     * @throws IOException : in case that a file could not be found or the output
+     * stream presents an error.
      */
     private static byte[] fileToByte(File file) throws IOException {
         byte[] dataByte = new byte[(int) file.length()];

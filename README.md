@@ -35,6 +35,8 @@ Para poder descargar el proyecto y usarlo para desarrollo o pruebas, se deben re
 ## Documentación
 Para ver la documentación del framework y más información sobre las funcionalidades, acceda al siguiente link: 
 
+[API Web Service Framework](https://carloscl98.github.io/WebServiceFramework/src/main/resources/site/apidocs/index.html)
+
 ## Despliegue
 El proyecto está desplegado en Heroku en la siguiente dirección [Heroku WebServiceFramework](https://webserviceframework.herokuapp.com/)
 

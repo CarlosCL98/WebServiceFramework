@@ -23,6 +23,10 @@ public class Service {
     private static BufferedReader in;
     private static BufferedOutputStream dataOut;
 
+    /**
+     * When listen is execute, all the connections between server and client start
+     * and stay ready to receive requests.
+     */
     public static void listen() {
         while (true) {
             try {

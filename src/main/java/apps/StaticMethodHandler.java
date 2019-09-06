@@ -15,7 +15,8 @@ public class StaticMethodHandler implements Handler {
     /**
      * StaticMethodHandler constructor.
      *
-     * @param method
+     * @param method represents the method of a class that has
+     *               an annotation.
      */
     public StaticMethodHandler(Method method) {
         m = method;
