@@ -76,7 +76,7 @@ public class Service {
                             }
                         }
                         // Look for param query
-                        String methodArgs = null;
+                        String methodArgs = "";
                         if (req.contains("?")) {
                             String[] params = req.substring(req.indexOf("?") + 1, req.length() - 1).split("&");
                             methodArgs = params[0].substring(params[0].indexOf("=") + 1, params[0].length());
@@ -92,9 +92,19 @@ public class Service {
                             // Header
                             HttpServer.headerResponse(out, null, "text/html", res);
                             // Content
-                            String content = (urlHandler.get(req)).process(methodArgs);
-                            out.write(content + "\r\n");
-                            out.flush();
+                            String content = null;
+                            if (methodArgs.equals("")) {
+                                content = (urlHandler.get(req)).process();
+                            } else {
+                                content = (urlHandler.get(req)).process(methodArgs);
+                            }
+                            if (content == null) {
+                                String[] newHeader = new String[]{"GET", "/notFound.html", "HTTP/1.1"};
+                                HttpServer.httpHandler(newHeader, out, dataOut);
+                            } else {
+                                out.write(content + "\r\n");
+                                out.flush();
+                            }
                         } else {
                             String[] newHeader = new String[]{"GET", "/notFound.html", "HTTP/1.1"};
                             HttpServer.httpHandler(newHeader, out, dataOut);

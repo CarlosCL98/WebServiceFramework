@@ -14,4 +14,12 @@ public interface Handler {
      * @return String : the response of the method.
      */
     String process(String methodArg);
+
+    /**
+     * Process allows to execute the method that
+     * this handler is keeping.
+     *
+     * @return String : the response of the method.
+     */
+    String process();
 }

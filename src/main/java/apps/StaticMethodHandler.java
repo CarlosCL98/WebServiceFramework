@@ -19,7 +19,27 @@ public class StaticMethodHandler implements Handler {
      *               an annotation.
      */
     public StaticMethodHandler(Method method) {
-        m = method;
+        this.m = method;
+    }
+
+    /**
+     * Process allows to execute the method that
+     * this handler is keeping.
+     *
+     * @param methodArg represent the params of the method to handle.
+     * @return String : the response of the method.
+     */
+    @Override
+    public String process(String methodArg) {
+        String answer = null;
+        try {
+            answer = (String) m.invoke(null, methodArg);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return answer;
     }
 
     /**
@@ -29,10 +49,10 @@ public class StaticMethodHandler implements Handler {
      * @return String : the response of the method.
      */
     @Override
-    public String process(String methodArg) {
+    public String process() {
         String answer = null;
         try {
-            answer = (String) m.invoke(null, methodArg);
+            answer = (String) m.invoke(null, null);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

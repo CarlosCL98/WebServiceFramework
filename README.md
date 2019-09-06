@@ -13,7 +13,7 @@ Las siguientes son softwares necesarios para ejecutar el proyecto de manera loca
 - Java JDK 1.8 --> [Guía de Instalación Java JDK 1.8](https://www3.ntu.edu.sg/home/ehchua/programming/howto/JDK_Howto.html)
 - Apache Maven 3.5.4 --> [Guía de Instalación Apache Maven 3.5.4](https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows)
 
-### Installing
+### Instalando
 
 Para poder descargar el proyecto y usarlo para desarrollo o pruebas, se deben realizar los siguientes pasos en consola de comandos:
 
@@ -37,8 +37,28 @@ Para ver la documentación del framework y más información sobre las funcional
 
 [API Web Service Framework](https://carloscl98.github.io/WebServiceFramework/src/main/resources/site/apidocs/index.html)
 
+## Arquitectura
+Para ver la arquitectura e implementación realizada se puede acceder al siguiente documento ubicado en la raíz del proyecto [Arquitectura de Web Service Framework](ArticuloArquitectura.pdf)
+
 ## Despliegue
 El proyecto está desplegado en Heroku en la siguiente dirección [Heroku WebServiceFramework](https://webserviceframework.herokuapp.com/)
+
+## Pruebas
+- Acceder a la página principal del servidor web.
+
+![](imgs/index.PNG)
+
+- Traer recursos estáticos
+
+![](imgs/imagen1.PNG)
+
+![](imgs/imagen2.PNG)
+
+- Intentar traer algún recurso que no se encuentre.
+
+![](imgs/error.PNG)
+
+- 
 
 ## Colaborador
 
