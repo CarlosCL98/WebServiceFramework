@@ -58,7 +58,13 @@ El proyecto está desplegado en Heroku en la siguiente dirección [Heroku WebSer
 
 ![](imgs/error.PNG)
 
-- 
+- Recurso dinámico sin parámetro
+
+![](imgs/sinParam.PNG)
+
+- Recurso dinámico con parámetro
+
+![](imgs/conParam.PNG)
 
 ## Colaborador
 
